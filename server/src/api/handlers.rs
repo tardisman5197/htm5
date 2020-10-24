@@ -38,7 +38,7 @@ pub async fn add_message(
     };
 
     Ok(warp::reply::with_status(
-        format!("Add: {:?}", msg),
+        format!("Add: {:?} -> {:?}", msg, details),
         StatusCode::OK,
     ))
 }
