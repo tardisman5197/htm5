@@ -1,5 +1,6 @@
 use warp::{http::StatusCode};
 use serde::{Serialize, Deserialize};
+use super::genius;
 
 // AddMessage is the struct received from an Add Message
 // request.
@@ -25,6 +26,17 @@ pub async fn add_message(
     msg: AddMessage,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Add: {:?}", msg);
+    // TODO:
+    //  Check if song lyric
+    //  Store in DB
+
+    // Check that a message is a song lyric
+    // If not return bad request
+    let details = match genius::get_details(msg.message.to_string()) {
+        Ok(details) => details,
+        Err(e) => return Ok(warp::reply::with_status(format!("Error adding message: {:?}", e), StatusCode::BAD_REQUEST))
+    };
+
     Ok(warp::reply::with_status(
         format!("Add: {:?}", msg),
         StatusCode::OK,
@@ -37,8 +49,16 @@ pub async fn valid_message(
     msg: ValidMessage,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Valid: {:?}", msg);
+
+    // Check that a message is a song lyric
+    // If not return bad request
+    let details = match genius::get_details(msg.message.to_string()) {
+        Ok(details) => details,
+        Err(e) => return Ok(warp::reply::with_status(format!("Error adding message: {:?}", e), StatusCode::BAD_REQUEST))
+    };
+
     Ok(warp::reply::with_status(
-        format!("Valid: {:?}", msg),
+        format!("Valid: {:?} -> {:?}", msg, details),
         StatusCode::OK,
     ))
 }
@@ -49,6 +69,8 @@ pub async fn read_message(
     id: String,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Read: {}", id);
+    // TODO:
+    //  Alter message in DB
     Ok(warp::reply::with_status(
         format!("Read: {}", id),
         StatusCode::OK,
@@ -62,6 +84,8 @@ pub async fn messages(
     receiver: String,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Messages: {} -> {}", sender, receiver);
+    // TODO:
+    //  Retrieval of all messages with sender and receiver
     Ok(warp::reply::with_status(
         format!("Messages: {} -> {}", sender, receiver),
         StatusCode::OK,
