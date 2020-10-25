@@ -10,6 +10,8 @@ services:
             - '8080:8080'
         networks:
             - backend
+        depends_on:
+            - database
     database:
         build: 
             context: ./db/
