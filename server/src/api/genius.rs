@@ -1,9 +1,10 @@
 use serde_json::{Value};
 use reqwest;
+
 use super::errors;
 
 // get_details returns the title and artist of a song lyric
-pub fn get_details(lyric: String) -> Result<(String, String), errors::NoSongError> {
+pub fn get_details(lyric: String) -> Result<(String, String, String), errors::NoSongError> {
     let songs: Value = match get_songs(lyric) {
         Ok(songs) => songs,
         Err(_e) => return Err(errors::NoSongError),
@@ -13,7 +14,7 @@ pub fn get_details(lyric: String) -> Result<(String, String), errors::NoSongErro
 
 // parse_details takes the genius response json of a search
 // request and extracts the artist and title of the song.
-fn parse_details(songs: Value) -> Result<(String, String), errors::NoSongError> {
+fn parse_details(songs: Value) -> Result<(String, String, String), errors::NoSongError> {
     // Extract the useful data from the response
     if songs["meta"]["status"] == 200 {
         if songs["response"]["hits"].is_array() {
@@ -21,7 +22,8 @@ fn parse_details(songs: Value) -> Result<(String, String), errors::NoSongError> 
                 if hit["type"] == "song" {
                     let song_data = ( 
                         hit["result"]["title"].as_str().unwrap().to_string(), 
-                        hit["result"]["primary_artist"]["name"].as_str().unwrap().to_string()
+                        hit["result"]["primary_artist"]["name"].as_str().unwrap().to_string(),
+                        hit["result"]["url"].as_str().unwrap().to_string()
                     );
                     return Ok(song_data);
                 }
