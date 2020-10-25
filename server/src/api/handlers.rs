@@ -29,7 +29,7 @@ pub async fn add_message(
         message: add_msg.message.to_string(),
         artist: details.0.to_string(),
         song: details.1.to_string(),
-        link: "http://a.com".to_string(),
+        link: details.2.to_string(),
     };
 
     // Store message in DB
