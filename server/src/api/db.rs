@@ -120,7 +120,7 @@ pub fn get_messages(sender: &String, receiver: &String) -> Result<Vec<models::Me
             timesent: row.get(3),
             timeread: match row.try_get(4) {
                 Ok(timeread) => timeread,
-                Err(_) => "NULL",
+                Err(_) => "NULL".to_string(),
             },
             message: row.get(5),
             artist: row.get(6),
