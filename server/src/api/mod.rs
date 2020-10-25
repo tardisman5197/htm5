@@ -4,3 +4,5 @@ pub mod handlers;
 pub mod filters;
 pub mod genius;
 pub mod errors;
+pub mod models;
+pub mod db;

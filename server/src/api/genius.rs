@@ -1,5 +1,6 @@
 use serde_json::{Value};
 use reqwest;
+
 use super::errors;
 
 // get_details returns the title and artist of a song lyric

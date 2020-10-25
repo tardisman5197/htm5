@@ -36,7 +36,7 @@ pub fn valid() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejectio
 // PATCH /message/<id>/read
 pub fn read() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     warp::patch()
-        .and(warp::path!("message" / String / "read"))
+        .and(warp::path!("message" / i32 / "read"))
         .and_then(handlers::read_message)
 }
 
