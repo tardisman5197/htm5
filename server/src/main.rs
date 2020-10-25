@@ -2,6 +2,7 @@ use std::{thread, time};
 
 mod api;
 
+
 #[tokio::main]
 async fn main() {
     // Read in argument for port
