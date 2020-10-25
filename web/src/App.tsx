@@ -49,20 +49,20 @@ const MessageItemMeta = styled.div<{ right: boolean; }>`
 `;
 
 const TEST_MESSAGES: Message[] = [{
-  message: 'test testing 123',
-  sender: 'user1',
-  receiver: 'user2',
-  artist: 'Artistname',
-  song: 'Somesong',
-  link: '#todo',
+  message: 'Hello, is it me you\'re looking for?',
+  sender: 'me',
+  receiver: 'you',
+  artist: 'Lionel Richie',
+  song: 'Hello',
+  link: 'https://genius.com/Lionel-richie-hello-lyrics',
   timesent: new Date('2020-10-21')
 }, {
-  message: 'yep it works!',
-  sender: 'user2',
-  receiver: 'user1',
-  artist: 'Anotherartist',
-  song: 'Othersong',
-  link: '#alsotodo',
+  message: 'Tedious conversations',
+  sender: 'you',
+  receiver: 'me',
+  artist: 'The Darkness',
+  song: 'Southern Trains',
+  link: 'https://genius.com/The-darkness-southern-trains-lyrics',
   timesent: new Date('2020-10-22')
 }];
 
@@ -134,7 +134,7 @@ const App = () =>{
         {getConversationMessages(user, viewing, messages).map((message, i) => (
           <MessageItem key={i} right={message.sender === user}>
             <MessageItemContent right={message.sender === user}>{message.message}</MessageItemContent>
-        <MessageItemMeta right={message.sender === user}>{message.timesent.toLocaleString()}, <a href={message.link}>{message.artist} - {message.song}</a></MessageItemMeta>
+            <MessageItemMeta right={message.sender === user}>{message.timesent.toLocaleString()}, <a href={message.link} target="_blank" rel="noreferrer">{message.artist} - {message.song}</a></MessageItemMeta>
           </MessageItem>
         ))}
       </MessagesList>
