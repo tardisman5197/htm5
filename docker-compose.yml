@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    server:
+        container_name: chat_server
+        build:
+            context: ./server/
+            dockerfile: ./Dockerfile
+        ports:
+            - '8080:8080'
+        networks:
+            - backend
+        depends_on:
+            - database
+    database:
+        build: 
+            context: ./db/
+            dockerfile: ./Dockerfile
+        container_name: chat_database
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_PASSWORD: password
+        ports:
+            - "8001:5432"
+        networks:
+            - backend
+        
+
+networks: 
+    backend:

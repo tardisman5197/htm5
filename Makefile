@@ -8,17 +8,17 @@ install:
 
 build:
 	@echo "Building the server"
-	sudo docker build -t server .
+	sudo docker-compose build
 	@echo "Built Server"
 
 run:
 	@echo "Running the server"
-	sudo docker run -t server
+	sudo docker-compose up
 
 start:
 	@echo "Starting the server"
-	sudo docker run -d -t server
+	sudo docker-compose run -d
 
 stop:
 	@echo "Stopping the server"
-	sudo docker stop server
+	sudo docker-compose down
