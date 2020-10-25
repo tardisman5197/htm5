@@ -35,7 +35,7 @@ pub async fn add_message(
     // Store message in DB
     match db::insert_message(&msg) {
         Ok(_) => Ok(warp::reply::with_status(
-            format!("Add: {:?} -> {:?}", msg, details),
+            format!("Add: {:?}", msg),
             StatusCode::OK,
         )),
         Err(e) => return Ok(
@@ -73,12 +73,22 @@ pub async fn read_message(
     id: i32,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     println!("Read: {}", id);
-    // TODO:
-    //  Alter message in DB
-    Ok(warp::reply::with_status(
-        format!("Read: {}", id),
-        StatusCode::OK,
-    ))
+    
+    let time = Utc::now().to_rfc3339();
+
+    // Store message in DB
+    match db::read_message(&id, &time) {
+        Ok(_) => return Ok(warp::reply::with_status(
+            format!("Update: {:?}", id),
+            StatusCode::OK,
+        )),
+        Err(e) => return Ok(
+            warp::reply::with_status(
+                format!("Error adding message: {:?}", e), 
+                StatusCode::BAD_REQUEST
+            )
+        )
+    }
 }
 
 // messages returns a list of messages from the

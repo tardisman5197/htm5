@@ -132,3 +132,32 @@ pub fn get_messages(sender: &String, receiver: &String) -> Result<Vec<models::Me
 
     Ok(messages)
 }
+
+// read_message will update the read time for a message in the
+// database.
+pub fn read_message(id: &i32, time: &String) -> Result<(), postgres::Error> {
+    // Connect to the DB
+    let mut client =  match Client::connect("postgresql://admin:password@chat_database:5432", NoTls) {
+        Ok(client) => {
+            println!("Connected to Database");
+            client
+        }
+        Err(e) => {
+            return Err(e)
+        }
+    };
+
+    // Try to insert the message
+    match client.execute(
+        "UPDATE messages SET timeread = $1 WHERE id = $2",
+        &[
+            &time,
+            &id
+        ]
+    ) {
+        Ok(_) => return Ok(()),
+        Err(e) => {
+            return Err(e)
+        }
+    };
+}
